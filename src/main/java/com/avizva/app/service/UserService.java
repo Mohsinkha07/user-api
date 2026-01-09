@@ -35,12 +35,14 @@ public class UserService {
 
     public User updateUser(int id,User user){
         User userToUpdate = userRepository.findById(id);
-
+        if (userToUpdate == null) {
+            throw new RuntimeException();
+        }
         userToUpdate.setName(user.getName());
         userToUpdate.setGender(user.getGender());
         userToUpdate.setMaritalStatus(user.getMaritalStatus());
 
             return userRepository.save(userToUpdate);
-        
+
     }
 }
