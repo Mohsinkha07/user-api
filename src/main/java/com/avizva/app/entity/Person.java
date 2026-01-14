@@ -3,8 +3,8 @@ package com.avizva.app.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "persons")
+public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,11 +16,11 @@ public class User {
     @Column(name = "marital_status")
     private String maritalStatus;
 
-    public User() {
+    public Person() {
 
     }
 
-    public User(int id, String name, String gender, String maritalStatus) {
+    public Person(int id, String name, String gender, String maritalStatus) {
         this.id = id;
         this.name = name;
         this.gender = gender;

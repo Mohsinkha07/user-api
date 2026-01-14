@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
-public class UserController {
+@RequestMapping("/api/person")
+public class PersonController {
 
     @Autowired
     private PersonService personService;
@@ -30,8 +30,8 @@ public class UserController {
     }
 
     @PostMapping
-    public Person addUser(@RequestBody Person person){
-        return personService.addUser(person);
+    public void addUser(@RequestBody Person person){
+        personService.addUser(person);
     }
 
     @DeleteMapping("/all")

@@ -1,40 +1,40 @@
 package com.avizva.app.service;
 
 import com.avizva.app.entity.Person;
-import com.avizva.app.repository.UserRepository;
+import com.avizva.app.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-public class UserService {
+public class PersonService {
 
     @Autowired
-    private UserRepository userRepository;
+    private PersonRepository personRepository;
 
-    public Person addUser(Person person) {
-         return userRepository.addUser(person);
+    public  void addUser(Person person) {
+          personRepository.addPerson(person.getName(), person.getMaritalStatus());
     }
 
     public List<Person> getUsers() {
-        return userRepository.findAll();
+        return personRepository.findAll();
     }
 
     public Person getByUserId(int id) {
-    return userRepository.findById(id);
+    return personRepository.findById(id);
     }
 
     public void removeAllUser(){
-         userRepository.deleteAll();
+         personRepository.deleteAll();
     }
 
     public void removeById(int id){
-        userRepository.deleteById(id);
+        personRepository.deleteById(id);
     }
 
     public Person updateUser(int id, Person person){
-        Person personToUpdate = userRepository.findById(id);
+        Person personToUpdate = personRepository.findById(id);
         if (personToUpdate == null) {
             throw new NullPointerException("User not found");
         }
@@ -42,7 +42,7 @@ public class UserService {
         personToUpdate.setGender(person.getGender());
         personToUpdate.setMaritalStatus(person.getMaritalStatus());
 
-            return userRepository.save(personToUpdate);
+            return personRepository.save(personToUpdate);
 
     }
 }
