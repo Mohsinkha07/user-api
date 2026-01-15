@@ -1,6 +1,8 @@
 package com.avizva.app.config;
 
+import com.avizva.app.filter.JwtFilter;
 import com.avizva.app.service.MyUserDetailsService;
+import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
@@ -22,6 +25,9 @@ public class SecurityConfig  {
 
     @Autowired
     private MyUserDetailsService myUserDetailsService;
+
+    @Autowired
+    private JwtFilter jwtFliter;
 
 
     @Bean
@@ -35,6 +41,7 @@ public class SecurityConfig  {
         http.httpBasic(Customizer.withDefaults());
         http.sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.addFilterBefore(jwtFliter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
