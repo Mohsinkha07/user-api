@@ -1,53 +1,62 @@
 package com.avizva.app.controller;
 
 import com.avizva.app.entity.Person;
+import com.avizva.app.entity.PersonDTO;
+import com.avizva.app.exceptions.PersonNotFoundException;
 import com.avizva.app.service.PersonService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
-@RequestMapping("/api/person")
+@RequestMapping("/api/persons")
 public class PersonController {
 
-    @Autowired
-    private PersonService personService;
+    private final PersonService personService;
+
+    public PersonController(PersonService personService) {
+        this.personService = personService;
+    }
 
     @GetMapping("/list")
-    public List<Person> getAllUsers() {
-        return personService.getUsers();
+    public ResponseEntity<List<PersonDTO>> getAll() {
+        return ResponseEntity.ok(personService.getAllUsers());
     }
 
-    @GetMapping("/id/{id}")
-    public Person getById(@PathVariable int id){
-        return personService.getByUserId(id);
-    }
-
-    @GetMapping
-    public String Test(){
-        return "Ok";
+    @GetMapping("/{id}")
+    public ResponseEntity<PersonDTO> getById(@PathVariable int id) {
+        Person person = personService.getById(id);
+        return ResponseEntity.ok(new PersonDTO(person));
     }
 
     @PostMapping
-    public void addUser(@RequestBody Person person){
+    public ResponseEntity<Void> create(@RequestBody Person person) {
         personService.addUser(person);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/all")
-    public void removeUser(){
+    @PutMapping("/{id}")
+    public ResponseEntity<Person> update(@PathVariable int id, @RequestBody Person person) {
+        return ResponseEntity.ok(personService.updateUser(id, person));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAll() {
         personService.removeAllUser();
+        return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void removeByID(@PathVariable int id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable int id) {
         personService.removeById(id);
-    }
-
-    @PutMapping("/put/{id}")
-    public Person updateUser(@PathVariable int id, @RequestBody Person person){
-        return  personService.updateUser(id, person);
+        return ResponseEntity.noContent().build();
     }
 
 
 }
+

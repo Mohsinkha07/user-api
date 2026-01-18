@@ -11,16 +11,17 @@ public class Person {
     private int id;
     @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "gender")
-    private String gender;
-    @Column(name = "marital_status")
-    private String maritalStatus;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+    @Enumerated(EnumType.STRING)
+    private MaritalStatus maritalStatus;
+
 
     public Person() {
 
     }
 
-    public Person(int id, String name, String gender, String maritalStatus) {
+    public Person(int id, String name, Gender gender, MaritalStatus maritalStatus) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -43,19 +44,19 @@ public class Person {
         this.name = name;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
-    public String getMaritalStatus() {
+    public MaritalStatus getMaritalStatus() {
         return maritalStatus;
     }
 
-    public void setMaritalStatus(String maritalStatus) {
+    public void setMaritalStatus(MaritalStatus maritalStatus) {
         this.maritalStatus = maritalStatus;
     }
 

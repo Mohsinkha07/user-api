@@ -6,10 +6,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -21,14 +19,20 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtService jwtService;
 
-    @Autowired
-    private MyUserDetailsService myUserDetailsService;
+    private final JwtService jwtService;
 
-    @Autowired
-    ApplicationContext context;
+
+    private final MyUserDetailsService myUserDetailsService;
+
+
+    final ApplicationContext context;
+
+    public JwtFilter(JwtService jwtService, MyUserDetailsService myUserDetailsService, ApplicationContext context) {
+        this.jwtService = jwtService;
+        this.myUserDetailsService = myUserDetailsService;
+        this.context = context;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

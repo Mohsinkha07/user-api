@@ -2,7 +2,6 @@ package com.avizva.app.service;
 
 import com.avizva.app.entity.Users;
 import com.avizva.app.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,14 +11,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
-    @Autowired
-    private JwtService jwtService;
+    public UserService(UserRepository userRepository, AuthenticationManager authenticationManager, JwtService jwtService) {
+        this.userRepository = userRepository;
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
+    }
 
     public Users register(Users user){
         return userRepository.save(user);

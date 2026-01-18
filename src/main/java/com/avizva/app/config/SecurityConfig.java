@@ -23,11 +23,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig  {
 
-    @Autowired
-    private MyUserDetailsService myUserDetailsService;
 
-    @Autowired
-    private JwtFilter jwtFliter;
+    private final MyUserDetailsService myUserDetailsService;
+
+
+    private final JwtFilter jwtFliter;
+
+    public SecurityConfig(MyUserDetailsService myUserDetailsService, JwtFilter jwtFliter) {
+        this.myUserDetailsService = myUserDetailsService;
+        this.jwtFliter = jwtFliter;
+    }
 
 
     @Bean
@@ -35,7 +40,7 @@ public class SecurityConfig  {
 
         http.csrf(csrf -> csrf.disable());
         http.authorizeHttpRequests(request -> request
-                .requestMatchers("register","login")
+                .requestMatchers("/register","/login")
                 .permitAll()
                 .anyRequest().authenticated());
         http.httpBasic(Customizer.withDefaults());
